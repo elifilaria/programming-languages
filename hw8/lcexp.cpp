@@ -51,10 +51,14 @@ lc_exp* rand_app_exp (lc_exp e) {
 }
 
 bool occurs_free (lc_exp e, string search_var){
-  if (is_var_exp(e) == true)
-    return true;
+  if (is_var_exp(e) == true){
+    if (var_var_exp(e) == search_var)
+      return true;
+    else
+      return false;
+  }
   else if (is_lambda_exp(e) == true){
-    if (search_var == e.lambda->id)
+    if (bound_var_lambda_exp(e) == search_var )
       return false;
     else
       occurs_free(*body_lambda_exp(e), search_var);
@@ -90,7 +94,7 @@ int main(){
   statement.lambda->body = &bodyStatement;
   lc_exp* output = rand_app_exp(bodyStatement);
   cout << output->identifier->id << endl;
-  bool x = occurs_free(bodyStatement, "a");
+  bool x = occurs_free(bodyStatement, "b");
   cout << x << endl;
 
 }

@@ -159,3 +159,7 @@
 (define read-eval-print
   (sllgen:make-rep-loop "-->" value-of-program
     (sllgen:make-stream-parser scanner-spec grammar)))
+
+
+(display (run "*(7,3)"))
+(display (newline))

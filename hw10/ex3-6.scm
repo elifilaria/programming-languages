@@ -137,3 +137,6 @@
 (define read-eval-print
   (sllgen:make-rep-loop "-->" value-of-program
     (sllgen:make-stream-parser scanner-spec grammar)))
+
+(display (run "minus(-(minus(5),9))"))
+(display (newline))

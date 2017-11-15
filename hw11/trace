@@ -1,0 +1,62 @@
+(let-exp z (const-exp 5) (let-exp2 x (const-exp 3)(let-exp3 y (diff-exp` (var-exp x) (const-exp 1)) (let-exp4 x (const-exp 4) (diff-exp* (var-exp z) (diff-exp^ (var-exp x) (var-exp y)))))))
+
+			val1~> (vo (const-exp 5) ie)
+					(num-val 5)
+
+	(vo (let-exp2 x (const-exp 3)(let-exp3 y (diff-exp` (var-exp x) (const-exp 1) (let-exp4 x (const-exp 4) (diff-exp* (var-exp z) (diff-exp^ (var-exp x) (var-exp y)))))))(extend-env z (num-val 5) ie))
+
+			val1~> (vo (const-exp 3) (extend-env z (num-val 5) ie))
+					(num-val 3)
+
+		(vo (let-exp3 y (diff-exp` (var-exp x) (const-exp 1) (let-exp4 x (const-exp 4) (diff-exp* (var-exp z) (diff-exp^ (var-exp x) (var-exp y))))))(extend-env x (num-val 3)(extend-env z (num-val 5) ie)))
+
+					val1~> (vo (diff-exp` (var-exp x) (const-exp 1) (let-exp4 x (const-exp 4) (diff-exp *(var-exp z) (diff-exp^ (var-exp x) (var-exp y)))))(extend-env x (num-val 3)(extend-env z (num-val 5) ie)))
+
+								val1`~> (vo (var-exp x) (extend-env x (num-val 3)(extend-env z (num-val 5) ie)))
+										(apply-env (extend-env x (num-val 3)(extend-env z (num-val 5) ie)) x)
+										(num-val 3)
+
+								val2`~> (vo (const-exp 1)(extend-env x (num-val 3)(extend-env z (num-val 5) ie)))
+										(num-val 1)
+
+								num1`-~> (expval -> num (num-val 3))
+
+								num2`-~> (expval -> num (num-val 1))
+
+							(num-val (- num1` num2`)) = (num-val (- 3 1)) = (num-val 2)
+				(vo (let-exp4 x (const-exp 4) (diff-exp* (var-exp z) (diff-exp^ (var-exp x) (var-exp y))))(extend-env y (num-val 2)(extend-env x (num-val 3)(extend-env z (num-val 5) ie))))
+
+						val1~> (vo (const-exp 4) (extend-env y (num-val 2)(extend-env x (num-val 3)(extend-env z (num-val 5) ie))))
+								(num-val 4)
+
+					(vo (diff-exp* (var-exp z) (diff-exp^ (var-exp x) (var-exp y)))(extend-env x (num-val 4)(extend-env y (num-val 2)(extend-env x (num-val 3)(extend-env z (num-val 5) ie)))))
+
+								val1*~> (vo (var-exp z)(extend-env x (num-val 4)(extend-env y (num-val 2)(extend-env x (num-val 3)(extend-env z (num-val 5) ie)))))
+										(apply-env (extend-env x (num-val 4)(extend-env y (num-val 2)(extend-env x (num-val 3)(extend-env z (num-val 5) ie)))) z)
+										(num-val 5)
+
+								val2*~> (vo (diff-exp^ (var-exp x)) (extend-env x (num-val 4)(extend-env y (num-val 2)(extend-env x (num-val 3)(extend-env z (num-val 5) ie)))))
+
+											val1^~> (vo (var-exp x) (extend-env x (num-val 4)(extend-env y (num-val 2)(extend-env x (num-val 3)(extend-env z (num-val 5) ie)))))
+													(apply-env (extend-env x (num-val 4)(extend-env y (num-val 2)(extend-env x (num-val 3)(extend-env z (num-val 5) ie)))) x)
+													(num-val 4)
+
+											val2^~> (vo (var-exp y) (extend-env x (num-val 4)(extend-env y (num-val 2)(extend-env x (num-val 3)(extend-env z (num-val 5) ie)))))
+													(apply-env (extend-env x (num-val 4)(extend-env y (num-val 2)(extend-env x (num-val 3)(extend-env z (num-val 5) ie)))) y)
+													(num-val 2)
+
+											num1^~> (expval -> num (num-val 4))
+													4
+
+											num2^~> (expval -> num (num-val 2))
+													2
+
+										(num-val (- num1^ num2^ )) = (num-val (- 4 2)) = (num-val 2)
+
+								num1*~> (expval -> num (num-val 5))
+
+								num2*~>(expcal -> num (num-val 2))
+
+
+						(num-val (- num1* num2* )) = (num-val ( - 5 2)) = (num-val 3) 
+

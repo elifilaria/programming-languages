@@ -1,0 +1,65 @@
+(vop (call-exp (proc-exp f (call-exp (var-exp f) (call-exp (var-exp f) (const-exp 77)))) (proc-exp x (diff-exp (var-exp x) (const-exp 11)))) )
+(vo  																																	ie)
+|	|proc---> (expval->proc (vo (proc-exp f (call-exp (var-exp f) (call-exp (var-exp f)(const-exp 77)))) ie))
+|	|
+|	| ((procedure f (call-exp (var-exp f) (call-exp (var-exp f)(const-exp 77)))) ie)
+|	|
+|	|arg---> (vo (proc-exp x (diff-exp (var-exp x) (const-exp 11))) ie)
+|	|
+|	| (proc-val (procedure x (diff-exp (var-exp x) (const-exp 11))) ie)
+|	|
+|	|(apply-procedure proc arg)
+| 	| (vo (call-exp (var-exp f) (call-exp (var-exp f)(const-exp 77))) (extend-env f (proc-val (procedure x (diff-exp (var-exp x) (const-exp 11)))) ie) ie)		= new1
+|	|
+|	|	|proc---> (expval->proc (vo (var-exp f) new1))
+|	|	|		(expval->proc (apply-env f new1))
+|	|	|		(expval->proc (proc-val (procedure x (diff-exp (var-exp x) (const-exp 11)))))
+|	|	|		(procedure x (diff-exp (var-exp x) (const-exp 11)))
+|	|	|
+|	|	|arg---> (vo (call-exp (var-exp f)(const-exp 77)) new1)
+|	|	| 
+|	|	|(apply-procedure proc arg)
+|	|	| (vo (diff-exp (var-exp x) (const-exp 11)) (extend-env x (vo (call-exp (var-exp f)(const-exp 77)) new1) new1)) 	= new2
+|	|	|
+|	|	|var1---> (vo (var-exp x) new2)
+|	|	|			(apply-env x new2)
+|	|	|			(vo (call-exp (var-exp f)(const-exp 77)) new2)
+|	|	|
+|	|	|				|proc---> (expval->proc (vo (var-exp f) new2))
+|	|	|				|			(expval->proc (apply-env f new2))
+|	|	|				|			(expval->proc (proc-val (procedure x (diff-exp (var-exp x) (const-exp 11)))))
+|	|	|				|			(procedure x (diff-exp (var-exp x) (const-exp 11)))
+|	|	|				|
+|	|	|				|arg---> (vo (const-exp 77))
+|	|	|				|			(num-val 77)
+|	|	|				|
+|	|	|				|(apply-procedure proc arg)
+|	|	|				| (vo (diff-exp (var-exp x) (const-exp 11)) (extend-env x (num-val 77) new2) new2)	= new3
+|	|	|				|
+|	|	|				|var11---> (vo (var-exp x) new3)
+|	|	|				|			(apply-env x new3)
+|	|	|				|			(vo (num-val 77) new3)
+|	|	|				|			(num-val 77)
+|	|	|				|
+|	|	|				|num11---> (expval->num (num-val 77))
+|	|	|				|
+|	|	|				|var12---> (vo (const-exp 11))
+|	|	|				|			(num-val 11)
+|	|	|				|
+|	|	|				|num12---> (expval->num (num-val 11))
+|	|	|				|
+|	|	|				|(num-val -(num11 num12)) = (num-val (- 77 11)) = (num-val 66)
+|	|	|num1---> (expval->num (num-val 66))
+|	|	|
+|	|	|var2---> (vo (const-exp 11))
+|	|	|			(num-val 11)
+|	|	|
+|	|	|num2---> (expval->num (num-val 11))
+|	|	|
+|	|	|(num-val -(num1 num2)) = (num-val (- 66 11)) = (num-val 55)
+| (num-val 55)
+(num-val 55)
+
+
+
+

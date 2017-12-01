@@ -1,0 +1,102 @@
+(vop (let-exp x (const-exp 200) (let-exp2 f (proc-exp z (diff-exp (var-exp z) (var-exp x))) (let-exp3 x (const-exp 100) (let-exp4 g (proc-exp z (diff-exp (var-exp z) (var-exp x))) (diff-exp (call-exp (var-exp f) (const-exp 1)) (call-exp (var-exp g) (const-exp 1))))))))
+
+
+							val1[let x]~> (vo (const-exp 200) ie)
+									      (num-val 200)
+
+		(vo (let-exp2 f (proc-exp z (diff-exp (var-exp z) (var-exp x))) (let-exp3 x (const-exp 100) (let-exp4 g (proc-exp z (diff-exp (var-exp z) (var-exp x))) (diff-exp (call-exp (var-exp f) (const-exp 1)) (call-exp (var-exp g) (const-exp 1))))))(extend-env x (num-val 200)ie))
+
+							val1[let f]~> (vo (proc-exp z (diff-exp (var-exp z) (var-exp x))) (extend-env x (num-val 200)ie))
+										  (apply-env (extend-env x (num-val 200)ie) f)
+										  (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))
+
+					(vo (let-exp3 x (const-exp 100) (let-exp4 g (proc-exp z (diff-exp (var-exp z) (var-exp x))) (diff-exp (call-exp (var-exp f) (const-exp 1)) (call-exp (var-exp g) (const-exp 1))))) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))
+
+								val1[let x]~> (vo (const-exp 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))
+											  (num-val 100) 
+
+							(vo (let-exp4 g (proc-exp z (diff-exp (var-exp z) (var-exp x))) (diff-exp (call-exp (var-exp f) (const-exp 1)) (call-exp (var-exp g) (const-exp 1)))) (extend-env x (num-vall 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie))))))
+
+									val1[let g]~> (vo (proc-exp z (diff-exp (var-exp z) (var-exp x))) (extend-env x (num-vall 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie))))))
+												  (apply-env (extend-env x (num-vall 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie))))) g)
+												  (proc-val (procedure z (diff-exp (var-exp z) (var-exp x))) (extend-env x (num-vall 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie))))))
+
+
+										(vo (diff-exp (call-exp (var-exp f) (const-exp 1)) (call-exp (var-exp g) (const-exp 1))) (extend-env g (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)))) (extend-env x (num-vall 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))))
+
+														val1[diff]~> (vo (call-exp (var-exp f) (const-exp 1)) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))
+																	 
+
+																	 val1[call1]~> (vo (call-exp (var-exp f) (const-exp 1)) (extend-env g (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)))) (extend-env x (num-val 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))))
+																	 				
+																	 				proc[var f]~> (expval -> proc (vo (var-exp f) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie))))))
+																	 							  (expval -> proc (apply-env (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))) f))
+																	 							  (expval -> proc (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)))))
+																	 							  (procedure z (diff-exp (var-exp z) (var-exp x)))
+
+																	 				arg[call1]~> (vo (const-exp 1) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))
+																	 							  (num-val 1)
+
+																	 				(apply-procedure proc arg)
+																	 				  (vo (diff-exp (var-exp z) (var-exp x)) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))
+
+
+																	 							val1[diff-f]~> (vo (var-exp z) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie))))) 
+																	 											(apply-env (extend-env z (num-val 1) (extend-env x (num-vall 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))) z)
+																	 											(num-val 1)
+
+																	 							val2[diff-f]~> (vo (var-exp x) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))
+																	 											(apply-env (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))) x)
+																	 											(num-val 200)
+
+																	 							num1[diff-f]~> (expval -> num (num-val 1))
+																	 											(num-val 1)
+																	 											1
+
+																	 							num2[diff-f]~> (expval -> num (num-val 200))
+																	 											(num-val 200)
+																	 											200
+
+																	 				  (num-val -(num1[diff-f] num2[diff-f])) = (num-val (- 1 200)) = (num-val -199)
+
+
+														val2[diff]~> (vo (call-exp (var-exp g) (const-exp 1)) (extend-env g (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)))) (extend-env x (num-vall 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))))
+
+																	 val12[call2]~> (vo (call-exp (var-exp g) (const-exp 1)) (extend-env g (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)))) (extend-env x (num-val 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))))
+
+																	 				proc[var g]~> (expval -> proc (vo (var-exp g) (extend-env g (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)))) (extend-env x (num-val 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie))))))))
+																	 							  (expval -> proc (apply-env (extend-env g (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)))) (extend-env x (num-val 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie))))))) g)
+																	 							  (procedure z (diff-exp (var-exp z) (var-exp x)))
+
+																	 				arg[call2]~> (vo (const-exp 1) (extend-env g (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)))) (extend-env x (num-val 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))))
+																	 							  (num-val 1)
+
+																	 				(apply-procedure proc arg)
+																	 				  (vo (diff-exp (var-exp z) (var-exp x)) (extend-env g (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)))) (extend-env x (num-val 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))))
+
+																	 				  			val1[diff-g]~> (vo (var-exp z) (extend-env g (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)))) (extend-env x (num-val 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))))
+																	 				  							(apply-env (extend-env g (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)))) (extend-env x (num-val 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))) z)
+																	 				  							(num-val 1)
+
+
+																	 				  			val2[diff-g]~> (vo (var-exp x) (extend-env g (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)))) (extend-env x (num-val 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))))
+																	 				  							(apply-env (extend-env g (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)))) (extend-env x (num-val 100) (extend-env f (proc-val (procedure z (diff-exp (var-exp z) (var-exp x)) (extend-env x (num-val 200)ie)))))) x)
+																	 				  							(num-val 100)
+
+																	 				  			num1[diff-g]~> (expval -> num (num-val 1))
+																	 				  							(num-val 1)
+																	 				  							1																	 				  							
+
+																	 				  			num2[diff-g]~> (expval -> num (num-val 100))
+																	 				  							(num-val 100)
+																	 				  							100
+
+																	 				  (num-val -(num1[diff-g] num2[diff-g])) = (num-val (- 1 100)) = (num-val -99)
+
+										(num-val -(val1[diff] val2[diff])) = (num-val (- -199 -99)) = (num-val -100)
+
+					(num-val -100)
+
+		(num-val -100)
+
+(num-val -100)

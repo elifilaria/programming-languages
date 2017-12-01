@@ -23,15 +23,15 @@ struct lc_exp {
 };
 
 bool is_var_exp (lc_exp e) {
-  (e.lambda == NULL && e.app == NULL);
+  return (e.lambda == NULL && e.app == NULL);
 };
 
 bool is_lambda_exp (lc_exp e) {
-  (e.identifier == NULL && e.app == NULL);
+  return (e.identifier == NULL && e.app == NULL);
 };
 
 bool is_app_exp (lc_exp e) {
-  (e.identifier == NULL && e.lambda == NULL);
+  return (e.identifier == NULL && e.lambda == NULL);
 };
 
 string var_var_exp (lc_exp e) {
@@ -54,18 +54,20 @@ bool occurs_free (lc_exp e, string search_var){
   if (is_var_exp(e) == true){
     if (var_var_exp(e) == search_var)
       return true;
-    else
-      return false;
   }
   else if (is_lambda_exp(e) == true){
     if (bound_var_lambda_exp(e) == search_var )
       return false;
     else
-      occurs_free(*body_lambda_exp(e), search_var);
+      return occurs_free(*body_lambda_exp(e), search_var);
   }
   else{
-    occurs_free(*rator_app_exp(e), search_var);
-    occurs_free(*rand_app_exp(e), search_var);
+    if(occurs_free(*rator_app_exp(e), search_var) && 
+    occurs_free(*rand_app_exp(e), search_var)){
+      return true;
+    } else {
+      return false;
+    }
 }
 };
 
@@ -93,8 +95,15 @@ int main(){
   
   statement.lambda->body = &bodyStatement;
   lc_exp* output = rand_app_exp(bodyStatement);
-  cout << output->identifier->id << endl;
-  bool x = occurs_free(bodyStatement, "b");
-  cout << x << endl;
+  //cout << output->identifier->id << endl;
+  
+  // In Statement, a is not free
+  cout << occurs_free(statement, "a") << endl; // this will be 0 
+  
+  // But B is 
+  cout << occurs_free(statement, "b") << endl; // this will be 1 
+  
+  // And in bodyStatement, both a and b are free 
+  cout << occurs_free(bodyStatement, "a") << "\t" << occurs_free(bodyStatement, "b") << endl; // both 1  
 
 }

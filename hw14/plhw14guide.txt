@@ -1,0 +1,19 @@
+(letrec-exp 'f 'x (if-exp (zero?-exp (var-exp x)) (const-exp 0) (diff-exp1 (call-exp (var-exp f) (diff-exp2 (var-exp x) (const-exp 1))) (const-exp -2))) (call-exp (var-exp f) (const-exp 2))) = *
+
+(if-exp (zero?-exp (var-exp x)) (const-exp 0) (diff-exp1 (call-exp (var-exp f) (diff-exp2 (var-exp x) (const-exp 1))) (const-exp -2))) = ***
+
+(call-exp (var-exp f) (const-exp 2))) = **
+
+(entend-env-rec 'f 'x *** ie) = env1
+
+(extend-env 'x (num-val 2) env1) = env2
+
+(extend-env 'x (num-val 1) env2) = env3
+
+(extend-env 'x (num-val 0) env3) = env4
+
+(diff-exp1 (call-exp (var-exp f) (diff-exp2 (var-exp x) (const-exp 1))) (const-exp -2)) = exp1
+
+(call-exp (var-exp f) (diff-exp2 (var-exp x) (const-exp 1)) = exp2
+
+(diff-exp2 (var-exp x) (const-exp 1)) = exp3

@@ -1,0 +1,157 @@
+(vop (letrec-exp 'f 'x (if-exp (zero?-exp (var-exp x)) (const-exp 0) (diff-exp1 (call-exp (var-exp f) (diff-exp2 (var-exp x) (const-exp 1))) (const-exp -2))) (call-exp (var-exp f) (const-exp 2))))
+
+(vo (letrec-exp 'f 'x (if-exp (zero?-exp (var-exp x)) (const-exp 0) (diff-exp1 (call-exp (var-exp f) (diff-exp2 (var-exp x) (const-exp 1))) (const-exp -2))) (call-exp (var-exp f) (const-exp 2))) ie)
+
+(vo (** (extend-env-rec 'f 'x *** ie)))
+			proc~> (expval -> proc (vo (var-exp 'f) env1)
+				   (expval -> proc (apply-env env1 'f))
+				   (expval -> proc (proc-val (procedure 'x *** env1)))
+				   (procedure 'x env1)
+
+			arg~>  (vo (const-exp 2) env1)
+				   (num-val 2)
+
+	(apply-procedure (procedure 'x *** env1) (num-val 2))
+	(vo *** (extend-env 'x (num-val 2) env1))
+				val1~> (vo (zero?-exp (var-exp x) env2))
+
+						val11~> (vo (var-exp x) env2)
+								(apply-env env2 x)
+								(num-val 2)
+
+						num11~> (expval -> num (num-val 2))
+								2
+
+						(if (zero? 2))
+							(bool-val #f)
+				(expval -> bool val11)) = (bool-val #f)
+
+				(if #f)
+					
+					(vo (exp1 env2))
+							vall1~> (vo (exp2) env2)
+									procc~> (expval -> (vo (var-exp 'f) env2))
+											(expval -> apply-env env2 'f)
+											(expval -> apply-env env1 'f)
+											(expval -> proc (proc-val (procedure 'x *** env1)))
+											(procedure 'x *** env1)
+
+									argg~> (vo (exp3) env2)
+											vall11~> (vo (var-exp x) env2)
+													 (apply-env env2 x)
+													 (num-val 2)
+
+											vall12~> (vo (const-exp 1) env2)
+													 (num-val 1)
+
+											numm11~> (expval -> num (num-val 2)) 
+													 (num-val 2)
+													 2
+
+											numm12~> (expval -> num (num-val 1))
+													 (num-val 1)
+													 1
+
+										(num-val -(numm11 numm12)) = (num-val (- 2 1)) = (num-val 1)
+
+									(apply-procedure (procedure 'x *** env1) (num-val 1))
+
+									(vo *** (extend-env 'x (num-val 1) env2))
+													val1!~> (vo (zero?-exp (var-exp x) env3)
+
+																val11!~> (vo (var-exp x) env3)
+																		(apply-env env3 x)
+																		(num-val 1)
+
+																num11!~> (expval -> num (num-val 1))
+																		1
+
+																(if (zero? 1))
+																	(bool-val #f)
+														(expval -> bool val11!)) = (bool-val #f)
+
+														(if #f)
+					
+															(vo (exp1 env3))
+																	vall1!~> (vo (exp2) env3)
+																			procc!~> (expval -> (vo (var-exp 'f) env3))
+																					(expval -> apply-env env3 'f)
+																					(expval -> apply-env env2 'f)
+																					(expval -> apply-env env1 'f)
+																					(expval -> proc (proc-val (procedure 'x *** env1)))
+																					(procedure 'x *** env1)
+
+																			argg!~> (vo (exp3) env3)
+																					vall11!~> (vo (var-exp x) env3)
+																							 (apply-env env3 x)
+																							 (num-val 1)
+
+																					vall12!~> (vo (const-exp 1) env3)
+																							 (num-val 1)
+
+																					numm11!~> (expval -> num (num-val 1)) 
+																				  	 		 (num-val 1)
+													 										 1
+
+																					numm12!~> (expval -> num (num-val 1))
+																							 (num-val 1)
+																							 1
+
+																				(num-val -(numm11! numm12!)) = (num-val (- 1 1)) = (num-val 0)
+
+																			(apply-procedure (procedure 'x *** env1) (num-val 1))
+
+																			(vo *** (extend-env 'x (num-val 0) env3))
+
+																						val1`~> (vo (zero?-exp (var-exp x)) env4)
+
+																								val11`~> (vo (var-exp x) env4)
+																										(apply-env env4 x)
+																										(num-val 0)
+
+																								num11`~> (expval -> num (num-val 0))
+																										0
+
+																								(if (zero? 0))
+																									(bool-val #t)
+																						(expval -> bool val11`)) = (bool-val #t)
+
+																						(if #t)
+					
+																								(vo (const-exp 0) env4)
+																									(num-val 0)
+															
+																	vall2!~> (vo (const-exp -2) env4)
+																			 (num-val -2)
+
+																	numm1!~> (expval -> num (num-val 0)) = (num-val 0)
+																			 0
+
+																	numm2!~> (expval -> num (num-val -2)) = (num-val -2)
+
+															(num-val -(numm1! numm2!)) = (num-val (- 0 -2)) = (num-val 2)
+
+							vall2~> (vo (const-exp -2) env4)
+									(num-val -2)			
+
+							numm1~> (expval -> num (num-val 2)) = (num-val 2)
+									2
+
+							numm2~> (expval -> num (num-val -2)) = (num-val -2)
+
+					(num-val -(numm1 numm2)) = (num-val (- 2 -2)) = (num-val 4)
+
+	(num-val 4)
+
+(num-val 4)											
+
+
+
+
+							
+
+
+
+
+
+
